@@ -6,7 +6,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
-import { Sparkles, LayoutTemplate, Lightbulb, Save, Plus, ChevronsUpDown } from 'lucide-react';
+import { Sparkles, LayoutTemplate, Lightbulb, Save, Plus, ChevronsUpDown, ThumbsUp, Pencil } from 'lucide-react';
 import { TemplateSelector } from './TemplateSelector';
 import type { ActiveSection, ResumeData } from '@/lib/types';
 import { optimizeResumeSection, OptimizeResumeSectionOutput } from '@/ai/flows/real-time-resume-optimization';
@@ -52,8 +52,9 @@ function OptimizationPane({ activeSection, jobDescription }: { activeSection: Ac
         } catch (error) {
           console.error('Error optimizing resume section:', error);
           setResult({
-            suggestions: ["Could not get suggestions at this time."],
-            reasoning: "An error occurred while communicating with the AI.",
+            strengths: [],
+            improvements: ["Could not get suggestions at this time."],
+            overallFeedback: "An error occurred while communicating with the AI.",
           });
         } finally {
           setIsLoading(false);
@@ -75,20 +76,43 @@ function OptimizationPane({ activeSection, jobDescription }: { activeSection: Ac
           Click on a Summary, Experience, Education, or Skills text area to get real-time optimization tips.
         </div>
       ) : isLoading ? (
-        <div className="space-y-4">
-          <Skeleton className="h-4 w-3/4" />
-          <Skeleton className="h-4 w-full" />
-          <Skeleton className="h-4 w-full" />
-          <Skeleton className="h-4 w-1/2" />
+        <div className="space-y-4 p-4">
+            <Skeleton className="h-4 w-1/4 mb-2" />
+            <Skeleton className="h-4 w-3/4" />
+            <Skeleton className="h-4 w-full" />
+             <Skeleton className="h-4 w-1/4 mt-6 mb-2" />
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-4 w-2/3" />
         </div>
       ) : result ? (
-        <div className="space-y-4 text-sm">
-          <p className="font-semibold text-primary">{result.reasoning}</p>
-          <ul className="space-y-2 list-disc pl-5">
-            {result.suggestions.map((s, i) => (
-              <li key={i}>{s}</li>
-            ))}
-          </ul>
+        <div className="space-y-6 text-sm">
+          <p className="font-semibold text-primary">{result.overallFeedback}</p>
+          
+          {result.strengths && result.strengths.length > 0 && (
+            <div className="space-y-2">
+                <h4 className="flex items-center gap-2 font-semibold text-green-600 dark:text-green-500">
+                    <ThumbsUp className="h-4 w-4" /> Strengths
+                </h4>
+                <ul className="space-y-2 list-disc pl-5">
+                    {result.strengths.map((s, i) => (
+                    <li key={`strength-${i}`}>{s}</li>
+                    ))}
+                </ul>
+            </div>
+          )}
+
+          {result.improvements && result.improvements.length > 0 && (
+            <div className="space-y-2">
+                <h4 className="flex items-center gap-2 font-semibold text-amber-600 dark:text-amber-500">
+                    <Pencil className="h-4 w-4" /> Areas for Improvement
+                </h4>
+                 <ul className="space-y-2 list-disc pl-5">
+                    {result.improvements.map((s, i) => (
+                    <li key={`improvement-${i}`}>{s}</li>
+                    ))}
+                </ul>
+            </div>
+          )}
         </div>
       ) : (
          <div className="text-center text-sm text-muted-foreground p-8">

@@ -28,12 +28,19 @@ export type OptimizeResumeSectionInput = z.infer<
 >;
 
 const OptimizeResumeSectionOutputSchema = z.object({
-  suggestions: z
+  strengths: z
     .array(z.string())
-    .describe('A list of suggestions to improve the resume section.'),
-  reasoning: z
+    .describe(
+      'A list of what the user is doing well in the provided resume section.'
+    ),
+  improvements: z
+    .array(z.string())
+    .describe(
+      'A list of actionable suggestions to improve the resume section.'
+    ),
+  overallFeedback: z
     .string()
-    .describe('The reasoning behind the suggestions provided.'),
+    .describe('A brief, overall summary of the feedback.'),
 });
 export type OptimizeResumeSectionOutput = z.infer<
   typeof OptimizeResumeSectionOutputSchema
@@ -49,21 +56,27 @@ const prompt = ai.definePrompt({
   name: 'optimizeResumeSectionPrompt',
   input: {schema: OptimizeResumeSectionInputSchema},
   output: {schema: OptimizeResumeSectionOutputSchema},
-  prompt: `You are a resume optimization expert providing real-time feedback.
+  prompt: `You are a world-class resume optimization expert and career coach. Your goal is to provide concise, actionable, and encouraging feedback in real-time.
 
-You are optimizing the following section of the resume:
-Section Type: {{{sectionType}}}
-Section Content: {{{resumeSection}}}
+You are currently optimizing the '{{{sectionType}}}' section of a user's resume.
+Here is the content:
+'''
+{{{resumeSection}}}
+'''
 
 {{#if jobDescription}}
-You are tailoring the resume to the following job description:
+The user is targeting the following job description:
+'''
 {{{jobDescription}}}
+'''
 {{/if}}
 
-Provide a list of specific, actionable suggestions to improve this section of the resume to better match industry best practices and ATS requirements.
-Explain the reasoning behind each suggestion.
+Please analyze the section and provide feedback.
+1.  **Strengths**: Identify specific things the user has done well. Be positive and encouraging.
+2.  **Areas for Improvement**: Provide a list of specific, actionable suggestions to improve the section. Focus on clarity, impact, and alignment with industry best practices and ATS-friendliness. If a job description is provided, tailor the suggestions to it.
+3.  **Overall Feedback**: Write a brief, one-sentence summary of your analysis.
 
-Format your output as a JSON object with 'suggestions' (an array of strings) and 'reasoning' (a string).
+Format your output as a JSON object with 'strengths' (an array of strings), 'improvements' (an array of strings), and 'overallFeedback' (a string).
 `,
 });
 
