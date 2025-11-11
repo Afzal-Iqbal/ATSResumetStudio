@@ -1,3 +1,13 @@
+import { Header } from '@/components/layout/Header';
+import { ResumeBuilder } from '@/components/resume/ResumeBuilder';
+
 export default function Home() {
-  return <></>;
+  return (
+    <div className="flex flex-col min-h-screen">
+      <Header />
+      <main className="flex-1">
+        <ResumeBuilder />
+      </main>
+    </div>
+  );
 }
