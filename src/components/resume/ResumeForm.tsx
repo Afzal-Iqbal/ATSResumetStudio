@@ -24,75 +24,75 @@ interface ResumeFormProps {
 
 export function ResumeForm({ data, setData, setActiveSection }: ResumeFormProps) {
   return (
-    <ScrollArea className="h-[calc(100vh-5rem)]">
+    <ScrollArea className="h-[calc(100vh-5rem)] lg:h-auto lg:max-h-[calc(100vh-8rem)]">
       <Accordion type="multiple" defaultValue={['item-1', 'item-7']} className="w-full">
         <AccordionItem value="item-7">
-          <AccordionTrigger className="px-6 text-base font-semibold">
+          <AccordionTrigger className="px-4 sm:px-6 text-base font-semibold">
             <div className="flex items-center gap-3">
-              <FileText className="h-5 w-5 text-accent" />
+              <FileText className="h-5 w-5 text-primary" />
               Job Description
             </div>
           </AccordionTrigger>
-          <AccordionContent className="px-6">
+          <AccordionContent className="px-4 sm:px-6">
             <JobDescriptionForm data={data} setData={setData} />
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="item-1">
-          <AccordionTrigger className="px-6 text-base font-semibold">
+          <AccordionTrigger className="px-4 sm:px-6 text-base font-semibold">
             <div className="flex items-center gap-3">
-              <User className="h-5 w-5 text-accent" />
+              <User className="h-5 w-5 text-primary" />
               Personal Details
             </div>
           </AccordionTrigger>
-          <AccordionContent className="px-6">
+          <AccordionContent className="px-4 sm:px-6">
             <PersonalDetailsForm data={data} setData={setData} />
           </AccordionContent>
         </AccordionItem>
 
         <AccordionItem value="item-2">
-          <AccordionTrigger className="px-6 text-base font-semibold">
+          <AccordionTrigger className="px-4 sm:px-6 text-base font-semibold">
             <div className="flex items-center gap-3">
-              <NotepadText className="h-5 w-5 text-accent" />
+              <NotepadText className="h-5 w-5 text-primary" />
               Summary
             </div>
           </AccordionTrigger>
-          <AccordionContent className="px-6">
+          <AccordionContent className="px-4 sm:px-6">
             <SummaryForm data={data} setData={setData} setActiveSection={setActiveSection} />
           </AccordionContent>
         </AccordionItem>
 
         <AccordionItem value="item-3">
-          <AccordionTrigger className="px-6 text-base font-semibold">
+          <AccordionTrigger className="px-4 sm:px-6 text-base font-semibold">
             <div className="flex items-center gap-3">
-              <Briefcase className="h-5 w-5 text-accent" />
+              <Briefcase className="h-5 w-5 text-primary" />
               Work Experience
             </div>
           </AccordionTrigger>
-          <AccordionContent className="px-6">
+          <AccordionContent className="px-4 sm:px-6">
             <ExperienceForm data={data} setData={setData} setActiveSection={setActiveSection} />
           </AccordionContent>
         </AccordionItem>
 
         <AccordionItem value="item-4">
-          <AccordionTrigger className="px-6 text-base font-semibold">
+          <AccordionTrigger className="px-4 sm:px-6 text-base font-semibold">
             <div className="flex items-center gap-3">
-              <GraduationCap className="h-5 w-5 text-accent" />
+              <GraduationCap className="h-5 w-5 text-primary" />
               Education
             </div>
           </AccordionTrigger>
-          <AccordionContent className="px-6">
+          <AccordionContent className="px-4 sm:px-6">
             <EducationForm data={data} setData={setData} setActiveSection={setActiveSection} />
           </AccordionContent>
         </AccordionItem>
 
         <AccordionItem value="item-5">
-          <AccordionTrigger className="px-6 text-base font-semibold">
+          <AccordionTrigger className="px-4 sm:px-6 text-base font-semibold">
             <div className="flex items-center gap-3">
-              <Star className="h-5 w-5 text-accent" />
+              <Star className="h-5 w-5 text-primary" />
               Skills
             </div>
           </AccordionTrigger>
-          <AccordionContent className="px-6">
+          <AccordionContent className="px-4 sm:px-6">
             <SkillsForm data={data} setData={setData} setActiveSection={setActiveSection} />
           </AccordionContent>
         </AccordionItem>
