@@ -1,0 +1,183 @@
+{
+  "entities": {
+    "UserProfile": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "UserProfile",
+      "type": "object",
+      "description": "Represents a user profile within the ResuMaster application.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the user profile."
+        },
+        "email": {
+          "type": "string",
+          "description": "User's email address.",
+          "format": "email"
+        },
+        "firstName": {
+          "type": "string",
+          "description": "User's first name."
+        },
+        "lastName": {
+          "type": "string",
+          "description": "User's last name."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp indicating when the user profile was created.",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Timestamp indicating when the user profile was last updated.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "email",
+        "firstName",
+        "lastName",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "Resume": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Resume",
+      "type": "object",
+      "description": "Represents a resume created by a user.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the resume."
+        },
+        "userProfileId": {
+          "type": "string",
+          "description": "Reference to the UserProfile that owns this resume. (Relationship: UserProfile 1:N Resume)"
+        },
+        "templateId": {
+          "type": "string",
+          "description": "Reference to the ResumeTemplate used for this resume. (Relationship: ResumeTemplate 1:N Resume)"
+        },
+        "title": {
+          "type": "string",
+          "description": "Title of the resume (e.g., 'Software Engineer Resume')."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp indicating when the resume was created.",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Timestamp indicating when the resume was last updated.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "userProfileId",
+        "templateId",
+        "title",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "ResumeTemplate": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "ResumeTemplate",
+      "type": "object",
+      "description": "Represents a template used for creating resumes.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the resume template."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the template (e.g., 'ATS-Friendly Modern')."
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the template's features and suitability."
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "URL of the template's preview image.",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "description",
+        "imageUrl"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/userProfiles/{userProfileId}",
+        "definition": {
+          "entityName": "UserProfile",
+          "schema": {
+            "$ref": "#/backend/entities/UserProfile"
+          },
+          "description": "Stores user profile information. The document ID is the Firebase Auth UID.",
+          "params": [
+            {
+              "name": "userProfileId",
+              "description": "The unique identifier for the user profile (equal to the Firebase Auth UID)."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/userProfiles/{userProfileId}/resumes/{resumeId}",
+        "definition": {
+          "entityName": "Resume",
+          "schema": {
+            "$ref": "#/backend/entities/Resume"
+          },
+          "description": "Stores resumes associated with a user profile. Includes denormalized 'userProfileId' for authorization independence.",
+          "params": [
+            {
+              "name": "userProfileId",
+              "description": "The unique identifier for the user profile (owner of the resume)."
+            },
+            {
+              "name": "resumeId",
+              "description": "The unique identifier for the resume."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/resumeTemplates/{resumeTemplateId}",
+        "definition": {
+          "entityName": "ResumeTemplate",
+          "schema": {
+            "$ref": "#/backend/entities/ResumeTemplate"
+          },
+          "description": "Stores resume templates available for users to use.",
+          "params": [
+            {
+              "name": "resumeTemplateId",
+              "description": "The unique identifier for the resume template."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore data structure is designed to support the ResuMaster application, focusing on user profiles, resumes, and resume templates. The structure prioritizes authorization independence and simplifies security rules.\n\n*   **User Profiles:** User profiles are stored in a dedicated collection (`/userProfiles/{userProfileId}`). This allows for easy management of user data and simplifies security rules based on user ID.\n*   **Resumes:** Resumes are stored in a subcollection under each user's profile (`/userProfiles/{userProfileId}/resumes/{resumeId}`). This establishes a clear ownership hierarchy (UserProfile 1:N Resume), simplifying access control. The `userProfileId` is also included in the Resume document itself (denormalized), further supporting Authorization Independence.\n*   **Resume Templates:** Resume templates are stored in a separate collection (`/resumeTemplates/{resumeTemplateId}`).  These are generally considered public/read-only data, and security rules will reflect this.\n\nThis structure achieves Authorization Independence by denormalizing the `userProfileId` into the `Resume` documents. This avoids the need for `get()` calls in security rules to verify ownership. QAPs (Rules are not Filters) are supported by the structural segregation. User-specific data is stored under the `/userProfiles/{userProfileId}` path, enabling efficient and secure `list` operations based on user ID."
+  }
+}
