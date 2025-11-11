@@ -51,6 +51,10 @@ export function PersonalDetailsForm({ data, setData }: FormProps) {
           <Input id="website" name="website" value={data.personalDetails.website} onChange={handleChange} />
         </div>
       </div>
+       <div className="space-y-2">
+        <Label htmlFor="customLink">Custom Link</Label>
+        <Input id="customLink" name="customLink" value={data.personalDetails.customLink} onChange={handleChange} placeholder="e.g., github.com/username" />
+      </div>
     </div>
   );
 }

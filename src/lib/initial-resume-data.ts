@@ -10,6 +10,7 @@ export const initialResumeData: Omit<ResumeData, 'userProfileId'> & { userProfil
     location: 'San Francisco, CA',
     linkedIn: 'linkedin.com/in/alexdoe',
     website: 'alexdoe.dev',
+    customLink: '',
   },
   summary:
     'Innovative Software Engineer with 5+ years of experience in developing, testing, and maintaining web applications. Proficient in JavaScript, React, and Node.js. Passionate about building scalable and user-friendly solutions.',

@@ -6,6 +6,7 @@ export type PersonalDetails = {
   location: string;
   linkedIn: string;
   website: string;
+  customLink: string;
 };
 
 export type Experience = {

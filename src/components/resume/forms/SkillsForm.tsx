@@ -2,6 +2,8 @@ import type { Dispatch, SetStateAction } from 'react';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import type { ResumeData, ActiveSection } from '@/lib/types';
+import { Button } from '@/components/ui/button';
+import { Trash2 } from 'lucide-react';
 
 interface FormProps {
   data: ResumeData;
@@ -16,9 +18,20 @@ export function SkillsForm({ data, setData, setActiveSection }: FormProps) {
     setActiveSection({ type: 'skills', content: value, path: 'skills' });
   };
 
+  const clearSkills = () => {
+    setData((prev) => ({ ...prev, skills: '' }));
+    setActiveSection({ type: 'skills', content: '', path: 'skills' });
+  };
+
   return (
     <div className="space-y-2">
-      <Label htmlFor="skills">Skills</Label>
+      <div className="flex items-center justify-between">
+        <Label htmlFor="skills">Skills</Label>
+        <Button variant="ghost" size="icon" className="h-6 w-6 text-muted-foreground" onClick={clearSkills}>
+          <Trash2 className="h-4 w-4" />
+          <span className="sr-only">Clear skills section</span>
+        </Button>
+      </div>
       <Textarea
         id="skills"
         name="skills"
