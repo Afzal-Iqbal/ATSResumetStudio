@@ -5,6 +5,10 @@ import { useRouter } from 'next/navigation';
 import { useUser } from '@/firebase';
 import { Header } from '@/components/layout/Header';
 import { ResumeBuilder } from '@/components/resume/ResumeBuilder';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Button } from '@/components/ui/button';
+import { Menu } from 'lucide-react';
+import { ControlsPane } from '@/components/resume/ControlsPane'; // Assuming this is needed inside sheet
 
 export default function Home() {
   const { user, isUserLoading } = useUser();
@@ -17,7 +21,6 @@ export default function Home() {
   }, [user, isUserLoading, router]);
 
   if (isUserLoading || !user) {
-    // You can show a loading spinner here
     return (
       <div className="flex items-center justify-center min-h-screen">
         Loading...

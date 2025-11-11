@@ -30,18 +30,11 @@ export function ResumeBuilder() {
 
   useEffect(() => {
     if (resumes && resumes.length > 0 && !activeResumeId) {
-      const latestResume = resumes[0]; // Assuming latest is first
+      const latestResume = resumes.sort((a,b) => b.updatedAt?.toMillis() - a.updatedAt?.toMillis())[0];
       setActiveResumeId(latestResume.id);
-      setData(latestResume as unknown as ResumeData); // Might need validation
+      setData(latestResume as unknown as ResumeData);
     } else if (resumes && resumes.length === 0 && user && firestore) {
-      // Create a new resume if none exist for the user
-      const newResume = { ...initialResumeData, title: 'My First Resume', userProfileId: user.uid };
-      const colRef = collection(firestore, `userProfiles/${user.uid}/resumes`);
-      addDocumentNonBlocking(colRef, newResume).then(docRef => {
-        if (docRef) {
-          setActiveResumeId(docRef.id);
-        }
-      });
+      handleNewResume();
     }
   }, [resumes, activeResumeId, user, firestore]);
 
@@ -75,18 +68,18 @@ export function ResumeBuilder() {
   }
 
   if (areResumesLoading) {
-    return <div className="flex items-center justify-center min-h-screen">Loading Resumes...</div>;
+    return <div className="flex items-center justify-center min-h-[calc(100vh-4rem)]">Loading Resumes...</div>;
   }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[450px_1fr] xl:grid-cols-[450px_1fr_400px] gap-4 p-4 min-h-[calc(100vh-4rem)]">
-      <Card className="overflow-hidden">
+    <div className="grid grid-cols-1 lg:grid-cols-[1fr] xl:grid-cols-[450px_1fr_400px] gap-4 p-4 min-h-[calc(100vh-4rem)]">
+      <Card className="overflow-hidden xl:flex xl:flex-col">
         <CardContent className="p-0 h-full">
           <ResumeForm data={data} setData={setData} setActiveSection={setActiveSection} />
         </CardContent>
       </Card>
 
-      <div className="flex items-start justify-center py-8">
+      <div className="flex items-start justify-center py-8 lg:my-8 bg-muted/30 rounded-lg">
         <ResumePreview data={data} template={selectedTemplate} />
       </div>
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { FileText, Download, LogOut, User as UserIcon } from 'lucide-react';
+import { FileText, Download, LogOut, User as UserIcon, Menu } from 'lucide-react';
 import { useAuth, useUser } from '@/firebase';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -12,6 +12,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { ThemeToggle } from '@/components/theme-toggle';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { ControlsPane } from '@/components/resume/ControlsPane';
+
 
 export function Header() {
   const auth = useAuth();
@@ -26,17 +30,18 @@ export function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-card shadow-sm">
+    <header className="sticky top-0 z-50 w-full border-b bg-background shadow-sm">
       <div className="container flex h-16 items-center justify-between px-4 md:px-6">
         <div className="flex items-center gap-2">
           <FileText className="h-6 w-6 text-primary" />
           <h1 className="text-xl font-bold tracking-tight">ResuMaster</h1>
         </div>
-        <div className="flex items-center gap-4">
-          <Button onClick={handlePrint}>
+        <div className="flex items-center gap-2 md:gap-4">
+          <Button onClick={handlePrint} size="sm">
             <Download className="mr-2 h-4 w-4" />
-            Export PDF
+            Export
           </Button>
+          <ThemeToggle />
           {user && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -66,6 +71,19 @@ export function Header() {
               </DropdownMenuContent>
             </DropdownMenu>
           )}
+           <div className="xl:hidden">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="outline" size="icon">
+                  <Menu className="h-4 w-4" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent className="p-0 w-[400px] sm:max-w-[500px]">
+                {/* This is a temporary hack until we can pass state down */}
+                <div className="text-center p-8">This sidebar is under construction.</div>
+              </SheetContent>
+            </Sheet>
+          </div>
         </div>
       </div>
     </header>
