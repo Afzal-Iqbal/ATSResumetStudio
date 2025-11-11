@@ -30,6 +30,7 @@ export type Education = {
 
 export type ResumeData = {
   title: string;
+  userProfileId: string;
   personalDetails: PersonalDetails;
   summary: string;
   experience: Experience[];

@@ -35,7 +35,7 @@ export function ResumeBuilder() {
       setData(latestResume as unknown as ResumeData); // Might need validation
     } else if (resumes && resumes.length === 0 && user && firestore) {
       // Create a new resume if none exist for the user
-      const newResume = { ...initialResumeData, title: 'My First Resume' };
+      const newResume = { ...initialResumeData, title: 'My First Resume', userProfileId: user.uid };
       const colRef = collection(firestore, `userProfiles/${user.uid}/resumes`);
       addDocumentNonBlocking(colRef, newResume).then(docRef => {
         if (docRef) {
@@ -48,7 +48,8 @@ export function ResumeBuilder() {
   useEffect(() => {
     if (user && firestore && activeResumeId && debouncedData) {
       const resumeRef = doc(firestore, `userProfiles/${user.uid}/resumes`, activeResumeId);
-      setDocumentNonBlocking(resumeRef, debouncedData, { merge: true });
+      const dataToSave = { ...debouncedData, userProfileId: user.uid };
+      setDocumentNonBlocking(resumeRef, dataToSave, { merge: true });
     }
   }, [debouncedData, user, firestore, activeResumeId]);
 
@@ -62,7 +63,7 @@ export function ResumeBuilder() {
 
   const handleNewResume = () => {
     if (user && firestore) {
-      const newResume = { ...initialResumeData, title: `New Resume ${resumes ? resumes.length + 1 : 1}` };
+      const newResume = { ...initialResumeData, title: `New Resume ${resumes ? resumes.length + 1 : 1}`, userProfileId: user.uid };
       const colRef = collection(firestore, `userProfiles/${user.uid}/resumes`);
       addDocumentNonBlocking(colRef, newResume).then(docRef => {
         if(docRef) {

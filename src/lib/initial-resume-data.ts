@@ -1,6 +1,6 @@
 import type { ResumeData } from '@/lib/types';
 
-export const initialResumeData: ResumeData = {
+export const initialResumeData: Omit<ResumeData, 'userProfileId'> & { userProfileId?: string } = {
   title: 'My Resume',
   personalDetails: {
     fullName: 'Alex Doe',
