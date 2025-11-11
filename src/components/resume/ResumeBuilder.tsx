@@ -91,14 +91,14 @@ export function ResumeBuilder() {
   return (
     <>
       <Header isSheetOpen={isSheetOpen} onSheetOpenChange={setSheetOpen} controls={controlsPane} />
-      <main className="grid grid-cols-1 lg:grid-cols-[1fr] xl:grid-cols-[450px_1fr_400px] gap-4 p-4 flex-1">
-        <Card className="overflow-hidden xl:flex xl:flex-col">
+      <main className="grid grid-cols-1 lg:grid-cols-[1fr_auto] xl:grid-cols-[450px_1fr_400px] gap-4 p-2 sm:p-4 flex-1">
+        <Card className="overflow-hidden lg:flex lg:flex-col">
           <CardContent className="p-0 h-full">
             <ResumeForm data={data} setData={setData} setActiveSection={setActiveSection} />
           </CardContent>
         </Card>
 
-        <div className="flex items-start justify-center py-8 lg:my-8 bg-muted/30 rounded-lg">
+        <div className="flex items-start justify-center py-4 lg:py-8 bg-muted/30 rounded-lg min-h-[500px]">
           <ResumePreview data={data} template={selectedTemplate} />
         </div>
 
