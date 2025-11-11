@@ -20,7 +20,7 @@ const OptimizeResumeSectionInputSchema = z.object({
     .optional()
     .describe('The job description for which the resume is being tailored.'),
   sectionType: z
-    .enum(['personalDetails', 'experience', 'education', 'skills'])
+    .enum(['personalDetails', 'experience', 'education', 'skills', 'summary'])
     .describe('The type of resume section being optimized.'),
 });
 export type OptimizeResumeSectionInput = z.infer<
@@ -55,10 +55,10 @@ You are optimizing the following section of the resume:
 Section Type: {{{sectionType}}}
 Section Content: {{{resumeSection}}}
 
-{% if jobDescription %}
+{{#if jobDescription}}
 You are tailoring the resume to the following job description:
 {{{jobDescription}}}
-{% endif %}
+{{/if}}
 
 Provide a list of specific, actionable suggestions to improve this section of the resume to better match industry best practices and ATS requirements.
 Explain the reasoning behind each suggestion.

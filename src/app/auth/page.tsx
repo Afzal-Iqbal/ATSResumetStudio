@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth, useUser } from '@/firebase';
 import { initiateEmailSignIn, initiateEmailSignUp } from '@/firebase/non-blocking-login';
@@ -21,14 +21,21 @@ export default function AuthPage() {
   const [signupEmail, setSignupEmail] = useState('');
   const [signupPassword, setSignupPassword] = useState('');
 
+  useEffect(() => {
+    if (!isUserLoading && user) {
+      router.push('/');
+    }
+  }, [user, isUserLoading, router]);
+
   if (isUserLoading) {
     return <div>Loading...</div>;
   }
-
+  
   if (user) {
-    router.push('/');
-    return null;
+    // router.push('/'); // This was causing the error, moved to useEffect
+    return null; // Render nothing while redirecting
   }
+
 
   const handleLogin = () => {
     initiateEmailSignIn(auth, loginEmail, loginPassword);

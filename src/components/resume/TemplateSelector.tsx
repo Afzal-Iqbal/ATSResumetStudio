@@ -17,6 +17,16 @@ const templates = [
     name: 'Modern',
     image: PlaceHolderImages.find((img) => img.id === 'modern-template-preview'),
   },
+  {
+    id: 'professional',
+    name: 'Professional',
+    image: PlaceHolderImages.find((img) => img.id === 'professional-template-preview'),
+  },
+  {
+    id: 'ats-friendly',
+    name: 'ATS-Friendly',
+    image: PlaceHolderImages.find((img) => img.id === 'ats-friendly-template-preview'),
+  },
 ];
 
 export function TemplateSelector({ selectedTemplate, setSelectedTemplate }: TemplateSelectorProps) {
@@ -56,7 +66,6 @@ export function TemplateSelector({ selectedTemplate, setSelectedTemplate }: Temp
           </div>
         ))}
       </div>
-      <p className="text-center text-xs text-muted-foreground mt-4">More templates coming soon!</p>
     </div>
   );
 }

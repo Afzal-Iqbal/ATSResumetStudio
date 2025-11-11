@@ -4,7 +4,19 @@
       "id": "modern-template-preview",
       "description": "Preview of the modern resume template",
       "imageUrl": "https://images.unsplash.com/photo-1760405253210-d495d59c32dc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxyZXN1bWUlMjB0ZW1wbGF0ZXxlbnwwfHx8fDE3NjI4ODAzODV8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "resume template"
+      "imageHint": "resume template modern"
+    },
+    {
+      "id": "professional-template-preview",
+      "description": "Preview of the professional resume template",
+      "imageUrl": "https://images.unsplash.com/photo-1587116987928-21e47bd76cd2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxyZXN1bWUlMjB0ZW1wbGF0ZSUyMHByb2Zlc3Npb25hbHxlbnwwfHx8fDE3NjI4ODYyNzF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "resume template professional"
+    },
+    {
+      "id": "ats-friendly-template-preview",
+      "description": "Preview of the ATS-friendly resume template",
+      "imageUrl": "https://images.unsplash.com/photo-1620302044818-4209fdb10e62?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxyZXN1bWUlMjB0ZW1wbGF0ZSUyMHNpbXBsZXxlbnwwfHx8fDE3NjI4ODYyNzB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "resume template simple"
     }
   ]
 }

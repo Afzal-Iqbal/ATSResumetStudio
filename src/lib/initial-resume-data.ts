@@ -1,6 +1,7 @@
 import type { ResumeData } from '@/lib/types';
 
 export const initialResumeData: ResumeData = {
+  title: 'My Resume',
   personalDetails: {
     fullName: 'Alex Doe',
     jobTitle: 'Software Engineer',
