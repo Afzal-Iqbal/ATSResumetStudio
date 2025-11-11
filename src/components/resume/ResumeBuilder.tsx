@@ -11,11 +11,13 @@ import type { ResumeData, ActiveSection } from '@/lib/types';
 import { useUser, useFirestore, useCollection, useMemoFirebase } from '@/firebase';
 import { setDocumentNonBlocking, addDocumentNonBlocking } from '@/firebase/non-blocking-updates';
 import { doc, collection } from 'firebase/firestore';
+import { Header } from '../layout/Header';
 
 export function ResumeBuilder() {
   const { user } = useUser();
   const firestore = useFirestore();
   const [activeResumeId, setActiveResumeId] = useState<string | null>(null);
+  const [isSheetOpen, setSheetOpen] = useState(false);
 
   const resumesQuery = useMemoFirebase(
     () => (user ? collection(firestore, `userProfiles/${user.uid}/resumes`) : null),
@@ -51,6 +53,7 @@ export function ResumeBuilder() {
     if (selectedResume) {
       setActiveResumeId(resumeId);
       setData(selectedResume as unknown as ResumeData);
+      setSheetOpen(false);
     }
   }
 
@@ -64,41 +67,49 @@ export function ResumeBuilder() {
             setData(newResume);
         }
       });
+      setSheetOpen(false);
     }
   }
+
+  const controlsPane = (
+    <ControlsPane
+      activeSection={activeSection}
+      jobDescription={data.jobDescription}
+      selectedTemplate={selectedTemplate}
+      setSelectedTemplate={setSelectedTemplate}
+      resumes={resumes}
+      activeResumeId={activeResumeId}
+      onSelectResume={handleSelectResume}
+      onNewResume={handleNewResume}
+    />
+  );
 
   if (areResumesLoading) {
     return <div className="flex items-center justify-center min-h-[calc(100vh-4rem)]">Loading Resumes...</div>;
   }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[1fr] xl:grid-cols-[450px_1fr_400px] gap-4 p-4 min-h-[calc(100vh-4rem)]">
-      <Card className="overflow-hidden xl:flex xl:flex-col">
-        <CardContent className="p-0 h-full">
-          <ResumeForm data={data} setData={setData} setActiveSection={setActiveSection} />
-        </CardContent>
-      </Card>
-
-      <div className="flex items-start justify-center py-8 lg:my-8 bg-muted/30 rounded-lg">
-        <ResumePreview data={data} template={selectedTemplate} />
-      </div>
-
-      <div className="hidden xl:block">
-        <Card className="sticky top-20">
-          <CardContent className="p-0">
-            <ControlsPane
-              activeSection={activeSection}
-              jobDescription={data.jobDescription}
-              selectedTemplate={selectedTemplate}
-              setSelectedTemplate={setSelectedTemplate}
-              resumes={resumes}
-              activeResumeId={activeResumeId}
-              onSelectResume={handleSelectResume}
-              onNewResume={handleNewResume}
-            />
+    <>
+      <Header isSheetOpen={isSheetOpen} onSheetOpenChange={setSheetOpen} controls={controlsPane} />
+      <main className="grid grid-cols-1 lg:grid-cols-[1fr] xl:grid-cols-[450px_1fr_400px] gap-4 p-4 flex-1">
+        <Card className="overflow-hidden xl:flex xl:flex-col">
+          <CardContent className="p-0 h-full">
+            <ResumeForm data={data} setData={setData} setActiveSection={setActiveSection} />
           </CardContent>
         </Card>
-      </div>
-    </div>
+
+        <div className="flex items-start justify-center py-8 lg:my-8 bg-muted/30 rounded-lg">
+          <ResumePreview data={data} template={selectedTemplate} />
+        </div>
+
+        <div className="hidden xl:block">
+          <Card className="sticky top-20">
+            <CardContent className="p-0">
+              {controlsPane}
+            </CardContent>
+          </Card>
+        </div>
+      </main>
+    </>
   );
 }

@@ -1,5 +1,6 @@
 'use client';
 
+import type { Dispatch, SetStateAction } from 'react';
 import { Button } from '@/components/ui/button';
 import { FileText, Download, LogOut, User as UserIcon, Menu } from 'lucide-react';
 import { useAuth, useUser } from '@/firebase';
@@ -13,11 +14,18 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { ThemeToggle } from '@/components/theme-toggle';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { ControlsPane } from '@/components/resume/ControlsPane';
+import type { ActiveSection, ResumeData } from '@/lib/types';
 
 
-export function Header() {
+interface HeaderProps {
+    isSheetOpen: boolean;
+    onSheetOpenChange: Dispatch<SetStateAction<boolean>>;
+    controls: React.ReactNode;
+}
+
+export function Header({ isSheetOpen, onSheetOpenChange, controls }: HeaderProps) {
   const auth = useAuth();
   const { user } = useUser();
 
@@ -72,15 +80,17 @@ export function Header() {
             </DropdownMenu>
           )}
            <div className="xl:hidden">
-            <Sheet>
+            <Sheet open={isSheetOpen} onOpenChange={onSheetOpenChange}>
               <SheetTrigger asChild>
                 <Button variant="outline" size="icon">
                   <Menu className="h-4 w-4" />
                 </Button>
               </SheetTrigger>
               <SheetContent className="p-0 w-[400px] sm:max-w-[500px]">
-                {/* This is a temporary hack until we can pass state down */}
-                <div className="text-center p-8">This sidebar is under construction.</div>
+                <SheetHeader className="p-4 border-b">
+                    <SheetTitle>Controls</SheetTitle>
+                </SheetHeader>
+                {controls}
               </SheetContent>
             </Sheet>
           </div>
