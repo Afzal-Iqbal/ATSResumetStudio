@@ -1,12 +1,15 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@/firebase';
 import { Header } from '@/components/layout/Header';
-import { ResumeBuilder } from '@/components/resume/ResumeBuilder';
 
-export default function Home() {
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const { user, isUserLoading } = useUser();
   const router = useRouter();
 
@@ -26,7 +29,8 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <ResumeBuilder />
+      <Header />
+      <main>{children}</main>
     </div>
   );
 }
